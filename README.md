@@ -1,6 +1,8 @@
 # getdata-033_courseproject
 Coursera - Getting and Cleaning Data - Course Project
 
+Raw data: http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+
 General script description:
 1. Read variables labels needed for the resulting dataset using a regexp.
 2. Read source files, bind columns of each set (train, test), concatenate sets.
