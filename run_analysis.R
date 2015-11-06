@@ -23,21 +23,20 @@ ds.initial <- rbindlist(list(
 colnames(ds.initial) <- c("subject", "activityCode", features$name)
 
 # Read activity labels...
-labels <- fread("UCI HAR Dataset\\activity_labels.txt",
-                sep = " ",
-                col.names = c("activityCode", "activity"))
+lbl <- fread("UCI HAR Dataset\\activity_labels.txt",
+             sep = " ",
+             col.names = c("activityCode", "activity"))
 
 # ...and join them to the dataset.
-ds.initial <- merge(x = ds.initial, y = labels,
-                     by = "activityCode", all.x = T)
+labels <- lbl$activity
+names(labels) <- lbl$activityCode
+ds.initial$activity <- labels[ds.initial$activityCode]
 
 # Remove "code" column and reorder the rest.
 ds.initial[, activityCode := NULL]
 setcolorder(ds.initial,
             neworder = c("activity", setdiff(names(ds.initial), "activity"))
 )
-
-rm(features, labels)
 
 # Form tidy dataset.
 ds.tidy <- ds.initial[, lapply(.SD, mean), keyby = .(activity, subject)]
