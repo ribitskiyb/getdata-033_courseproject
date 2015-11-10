@@ -23,14 +23,13 @@ ds.initial <- rbindlist(list(
 colnames(ds.initial) <- c("subject", "activity", features$name)
 
 # Read activity labels...
-lbl <- fread("UCI HAR Dataset\\activity_labels.txt",
-             sep = " ",
-             col.names = c("code", "activity"))
-labels <- lbl$activity
-names(labels) <- lbl$code
+labels <- read.table("UCI HAR Dataset\\activity_labels.txt",
+                     sep = " ",
+                     col.names = c("code", "name"),
+                     row.names = 1)
 
 # ...and replace codes with names.
-ds.initial[, activity := labels[activity]]
+ds.initial[, activity := labels[activity, "name"]]
 
 # Form tidy dataset.
 ds.tidy <- ds.initial[, lapply(.SD, mean), keyby = .(activity, subject)]
